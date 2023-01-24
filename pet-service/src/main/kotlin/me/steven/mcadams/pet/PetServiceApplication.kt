@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 
@@ -55,12 +56,22 @@ class PetController(
         return petReactiveRepository.deleteById(id)
     }
 
-    // read
+    // delete all
+    @DeleteMapping("/")
+    fun deleteAllPets(): Mono<Void> {
+        return petReactiveRepository.deleteAll()
+    }
 
-    // delete
+    // read
     @GetMapping("/{id}")
     fun getPet(@PathVariable("id") id: String): Mono<Pet> {
         return petReactiveRepository.findById(id)
+    }
+
+    // list
+    @GetMapping("/")
+    fun listPets(): Flux<Pet> {
+        return petReactiveRepository.findAll()
     }
 }
 

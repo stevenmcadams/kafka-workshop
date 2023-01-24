@@ -2,7 +2,7 @@
 
 ```shell
 # CREATE
-curl -H "Content-Type: application/json" -XPOST http://localhost:8118/pets -d '{"name" : "Trixie", "type" : "DOG"}'
+curl -H "Content-Type: application/json" -XPOST http://localhost:8118/pets -d '{"name" : "Trixie", "type" : "Golden Retriever"}'
 ```
 
 ```shell

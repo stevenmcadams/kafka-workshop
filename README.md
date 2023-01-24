@@ -90,5 +90,7 @@ echo "value.converter=org.apache.kafka.connect.storage.StringConverter" >> sourc
 # terminal 4 - watch a kafka topic
 
 ```shell
+# create topic
+./bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic pets-pet --partitions 3 --replication-factor 1 --config compression.type=zstd --config cleanup.policy=delete --config retention.ms=2592000000 --config min.insync.replicas=1
 ./bin/kafka-console-consumer.sh --topic pets-pet --bootstrap-server localhost:9092
 ```
