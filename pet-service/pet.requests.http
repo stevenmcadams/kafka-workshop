@@ -3,8 +3,8 @@ POST http://localhost:8118/pets
 Content-Type: application/json
 
 {
-    "name": "Trixie",
-    "type": "Golden Retriever"
+    "name": "2",
+    "type": "Golden 2.3"
 }
 
 > {% client.global.set("pet_id", response.body.id); %}

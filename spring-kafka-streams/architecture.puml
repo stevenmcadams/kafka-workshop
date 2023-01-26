@@ -1,0 +1,26 @@
+@startuml
+actor actor
+database pet_database
+queue pet_topic
+queue pet_topic_1
+queue pet_topic_2
+queue pet_topic_3
+component pet_service
+agent kafka_connect
+
+component pet_diff_application
+
+queue pet_diff_topic
+
+actor -> pet_service
+pet_service -> pet_database
+pet_database -> kafka_connect
+kafka_connect -> pet_topic
+pet_topic == pet_topic_1 : partition 1
+pet_topic == pet_topic_2 : partition 2
+pet_topic == pet_topic_3 : partition 3
+
+pet_topic -> pet_diff_application
+
+pet_diff_application == pet_diff_topic
+@enduml

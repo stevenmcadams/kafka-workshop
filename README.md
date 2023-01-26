@@ -23,48 +23,8 @@ exit
 
 ## Configure local kafka
 
-* download kafka
-* download mongo kafka connect jar
-* add mongo connector configuration
-* create topics
-    * pets-pet
-
 ```shell
-cd ~/Downloads
-curl https://downloads.apache.org/kafka/3.3.1/kafka_2.13-3.3.1.tgz --output kafka_2.13-3.3.1.tgz 
-tar -xvf kafka_2.13-3.3.1.tgz
-cd kafka_2.13-3.3.1
-mkdir plugins
-cd plugins
-# this doesn't seem to be working. download this file manually and drop it into ~/Downloads/kafka_2.13-3.3.1/plugins/.
-# curl https://search.maven.org/remotecontent?filepath=org/mongodb/kafka/mongo-kafka-connect/1.7.0/mongo-kafka-connect-1.7.0-all.jar --output mongo-kafka-connect-1.7.0-all.jar
-echo "plugin.path=$(pwd)" >> ../config/connect-standalone.properties
-
-# add connector config
-cd ../config
-echo "change.stream.full.document=updateLookup" >> source-mongo-pets-pet.properties 
-echo "collection=pet" >> source-mongo-pets-pet.properties
-echo "connection.uri=mongodb://localhost:27017" >> source-mongo-pets-pet.properties
-echo "connector.class=com.mongodb.kafka.connect.MongoSourceConnector" >> source-mongo-pets-pet.properties
-echo "copy.existing=true" >> source-mongo-pets-pet.properties
-echo "database=pets" >> source-mongo-pets-pet.properties
-echo "errors.log.enable=true" >> source-mongo-pets-pet.properties
-echo "errors.log.include.messages=true" >> source-mongo-pets-pet.properties
-echo "heartbeat.interval.ms=60000" >> source-mongo-pets-pet.properties
-echo "heartbeat.topic.name=__mongodb_pets_pet_heartbeats" >> source-mongo-pets-pet.properties
-echo "key.converter=org.apache.kafka.connect.storage.StringConverter" >> source-mongo-pets-pet.properties
-echo "mongo.errors.deadletterqueue.topic.name=pets-pet-dl" >> source-mongo-pets-pet.properties
-echo "mongo.errors.log.enable=true" >> source-mongo-pets-pet.properties
-echo "mongo.errors.tolerance=all" >> source-mongo-pets-pet.properties
-echo "name=source-mongo-pets-pet" >> source-mongo-pets-pet.properties
-echo "output.format.key=schema" >> source-mongo-pets-pet.properties
-echo "output.format.value=json" >> source-mongo-pets-pet.properties
-echo "output.json.formatter=com.mongodb.kafka.connect.source.json.formatter.SimplifiedJson" >> source-mongo-pets-pet.properties
-echo "output.schema.key={\"type\": \"record\", \"name\": \"keySchema\", \"fields\" : [{\"name\": \"documentKey._id\", \"type\": \"string\"}]}" >> source-mongo-pets-pet.properties
-echo "tasks.max=1" >> source-mongo-pets-pet.properties
-echo "topic.separator=-" >> source-mongo-pets-pet.properties
-echo "value.converter=org.apache.kafka.connect.storage.StringConverter" >> source-mongo-pets-pet.properties
-
+sh ./install-kafka.sh
 ```
 
 ## launch local kafka
