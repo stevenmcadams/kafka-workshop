@@ -27,7 +27,7 @@ for topic in $(./bin/kafka-topics.sh --list --bootstrap-server localhost:9092); 
 ### listen to a topic
 
 ```shell
-./bin/kafka-console-consumer.sh --topic pets-pet --bootstrap-server localhost:9092
+./bin/kafka-console-consumer.sh --property print.key=true --topic pets-pet --bootstrap-server localhost:9092
 ```
 
 ### TOPICS
@@ -37,7 +37,7 @@ for topic in $(./bin/kafka-topics.sh --list --bootstrap-server localhost:9092); 
 * pet-name-update-count
 
 ```shell
-./bin/kafka-console-consumer.sh --topic pets-pet --bootstrap-server localhost:9092
-./bin/kafka-console-consumer.sh --topic pet-name --bootstrap-server localhost:9092
-./bin/kafka-console-consumer.sh --topic pet-name-update-count --bootstrap-server localhost:9092
+./bin/kafka-console-consumer.sh --property print.key=true --topic pets-pet --bootstrap-server localhost:9092
+./bin/kafka-console-consumer.sh --property print.key=true --topic pet-name --bootstrap-server localhost:9092
+./bin/kafka-console-consumer.sh --property print.key=true --topic pet-name-update-count --bootstrap-server localhost:9092
 ```

@@ -1,7 +1,6 @@
 package me.steven.mcadams.kafkaworkshop
 
 import java.time.Duration
-import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.KafkaStreams
@@ -19,7 +18,6 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.annotation.EnableKafka
-import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration
 import org.springframework.kafka.config.KafkaStreamsConfiguration
 import org.springframework.kafka.config.StreamsBuilderFactoryBean
@@ -77,35 +75,24 @@ class KafkaConfig {
     fun petStream(petStreamsBuilder: StreamsBuilder): KStream<String, String> {
         val petStreamProcessor: KStream<String, String> = petStreamsBuilder.stream(PET_NAME_TOPIC)
 
-        petStreamProcessor.groupByKey()
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofSeconds(10)))
+        petStreamProcessor
+            // count the number of messages by `key` for 5 second windows
+            .groupByKey()
+            .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofSeconds(5)))
             .count()
             .toStream()
-            .map { key, value -> KeyValue(key.key(), value) }
-            .filter { _, value -> value > 3 }
-            .peek { key, value ->
-                logger.info("publishing {}:{}", key, value)
+            .map { key, value ->
+                logger.info("key : {}", key.key())
+                KeyValue(key.key(), value)
             }
-            .to(PET_NAME_UPDATE_COUNT_TOPIC, Produced.valueSerde(Serdes.Long()))
+            .filter { _, value -> value > 2 }
+            .mapValues { value -> value.toString() }
+            .peek { key, value ->
+                logger.info("publishing ({}:{})", key, value)
+            }
+            .to(PET_NAME_UPDATE_COUNT_TOPIC, Produced.with(Serdes.String(), Serdes.String()))
 
         return petStreamProcessor
     }
 
-    private fun debug(record: ConsumerRecord<String, String>) {
-        logger.info("received message : {}", record.value())
-        logger.info("\t{}:{}", "key", record.key())
-        logger.info("\t{}:{}", "offset", record.offset())
-        logger.info("\t{}:{}", "partition", record.partition())
-        logger.info("\t{}:{}", "timestamp", record.timestamp())
-        logger.info("\t{}:{}", "topic", record.topic())
-        record.headers().iterator().forEach {
-            logger.info("\tHEADER : {}:{}", it.key(), it.value().toString())
-        }
-    }
-
-    @KafkaListener(topics = [PET_NAME_UPDATE_COUNT_TOPIC])
-    fun listen(record: ConsumerRecord<String, String>) {
-        logger.info("RECORD RECEIVED FROM {}", PET_NAME_UPDATE_COUNT_TOPIC)
-        debug(record)
-    }
 }
