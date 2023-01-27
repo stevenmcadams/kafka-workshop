@@ -13,6 +13,9 @@
 * https://kafka.apache.org/quickstart
 * https://kafka.apache.org/documentation/
 * https://www.youtube.com/watch?v=FKgi3n-FyNU
+* https://www.confluent.io/blog/error-handling-patterns-in-kafka/
+* https://cwiki.apache.org/confluence/display/KAFKA/Kafka+Streams+Architecture
+*
 
 ### TODO
 
