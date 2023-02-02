@@ -8,14 +8,15 @@
 * partition
 * broker
 
-#### learn more
+### learn more
 
 * https://kafka.apache.org/quickstart
 * https://kafka.apache.org/documentation/
+* https://www.confluent.io/blog/apache-kafka-intro-how-kafka-works/
 * https://www.youtube.com/watch?v=FKgi3n-FyNU
 * https://www.confluent.io/blog/error-handling-patterns-in-kafka/
 * https://cwiki.apache.org/confluence/display/KAFKA/Kafka+Streams+Architecture
-*
+* https://www.confluent.io/blog/apache-kafka-architecture-and-internals-by-jun-rao/
 
 ### TODO
 
